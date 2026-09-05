@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>بيان بقراءة العدادات السرية لمحطة وقود</title>
+<style>
+  @page { size: A4 landscape; margin: 6mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Arial", "Tahoma", sans-serif;
+    direction: rtl;
+    background: #eef1f4;
+    margin: 0;
+    padding: 18px;
+    color: #111;
+    font-size: 16px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+  .sheet {
+    max-width: 1300px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px 26px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+  .letterhead {
+    text-align: right;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+  }
+  .letterhead .lh-line1 {
+    font-size: 19px;
+    font-weight: bold;
+    font-family: "Traditional Arabic", "Amiri", "Arial", serif;
+  }
+  .letterhead .lh-line2 {
+    font-size: 17px;
+    font-weight: bold;
+    font-family: "Traditional Arabic", "Amiri", "Arial", serif;
+    margin-top: 2px;
+  }
+  .letterhead .lh-rule {
+    width: 240px;
+    border-bottom: 2px solid #333;
+    margin: 4px 0 0 auto;
+  }
+  .main-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(90deg,#0d2f66,#1a56b0);
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    margin-bottom: 12px;
+  }
+  .main-title .fill { color:#fff; border-bottom-color:#fff; }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    font-size: 17px;
+    gap: 10px;
+  }
+  .fill {
+    border-bottom: 1px dotted #333;
+    display: inline-block;
+    min-width: 140px;
+    padding: 0 4px;
+    outline: none;
+    font-weight: bold;
+  }
+  .fill:focus { background: #fffbdc; }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin-top: 6px;
+  }
+  table.report {
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 0;
+  }
+  table.report th, table.report td {
+    border: 1px solid #444;
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 16px;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+  table.report th {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .section-title {
+    font-weight: bold;
+    font-size: 18px;
+    padding: 9px !important;
+  }
+  .label-col {
+    width: 230px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    background: #f7f7f7;
+    white-space: nowrap;
+    height: 40px;
+  }
+  /* All nozzle columns share the same rectangular width, and the same
+     compact height as بنزين ٩٢'s cells, regardless of column count */
+  table.report th:not(.label-col), table.report td.data-cell {
+    width: 170px;
+    min-width: 170px;
+    height: 40px;
+  }
+  td.data-cell {
+    outline: none;
+    font-size: 16px;
+  }
+  td.data-cell:focus { background: #fffbdc; }
+  table.report tr { height: 40px; }
+
+  /* Fuel type color themes */
+  .theme-red .section-title   { background:#f5c2c7; color:#7a1c26; }
+  .theme-red th                { background:#fbe4e6; }
+  .theme-red td.label-col      { background:#fdf0f1; }
+
+  .theme-green .section-title { background:#b9e6c9; color:#155724; }
+  .theme-green th              { background:#e3f7ea; }
+  .theme-green td.label-col    { background:#eefbf2; }
+
+  .theme-yellow .section-title{ background:#ffe69c; color:#6b5300; }
+  .theme-yellow th              { background:#fff6dd; }
+  .theme-yellow td.label-col    { background:#fffbee; }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 22px;
+    align-items: flex-start;
+    font-size: 16px;
+  }
+  .footer .left-block, .footer .right-block {
+    width: 46%;
+    line-height: 2.1;
+  }
+  .stamp-box {
+    border: 2px solid #2255aa;
+    color: #2255aa;
+    width: 250px;
+    padding: 10px;
+    text-align: center;
+    margin-top: 8px;
+    min-height: 80px;
+    font-size: 15px;
+    border-radius: 4px;
+  }
+
+  .toolbar {
+    max-width: 1300px;
+    margin: 0 auto 12px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  }
+  .toolbar .group { display:flex; align-items:center; gap:6px; font-size:14px; flex-wrap: wrap; }
+  .toolbar select, .toolbar input[type=number], .toolbar input[type=text] {
+    font-family: inherit; font-size: 14px; padding: 5px 8px; border:1px solid #999; border-radius:4px;
+  }
+  .toolbar button {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 7px 16px;
+    cursor: pointer;
+    border: 1px solid #888;
+    background: #fff;
+    border-radius: 5px;
+  }
+  .toolbar button.primary { background:#1a3d7c; color:#fff; border-color:#1a3d7c; }
+  .toolbar button.danger { background:#c0392b; color:#fff; border-color:#c0392b; }
+  .toolbar button:hover { opacity:0.85; }
+  #statusMsg { font-size: 13px; color: #2a7a2a; min-width: 140px; }
+
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    body { background: #fff; padding: 0; font-size: 14px; }
+    .sheet { border: none; box-shadow: none; max-width: 100%; padding: 4px 10px; }
+    .toolbar { display: none; }
+    .table-scroll { overflow: visible; }
+    table.report { width: 100% !important; }
+    table.report th, table.report td { padding: 4px 3px; font-size: 14px; }
+    table.report th:not(.label-col), table.report td.data-cell {
+      width: auto !important;
+      min-width: 0 !important;
+      height: 26px !important;
+    }
+    .label-col {
+      font-size: 14px !important;
+      width: 200px !important;
+      white-space: normal !important;
+      line-height: 1.3;
+      height: auto !important;
+      padding: 4px 6px !important;
+    }
+    table.report tr { height: auto !important; }
+    .section-title { font-size: 16px; padding: 5px !important; }
+    .top-row { margin-bottom: 8px; font-size: 14px; }
+    .main-title { font-size: 19px; padding: 6px 12px; margin-bottom: 6px; }
+    .letterhead { font-size: 14px; margin-bottom: 4px; }
+    .letterhead .lh-line1 { font-size: 15px; }
+    .letterhead .lh-line2 { font-size: 15px; }
+    .footer { margin-top: 8px; font-size: 14px; }
+    .stamp-box { min-height: 50px; padding: 5px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="group">
+    <label>الشهر:</label>
+    <select id="monthSelect"></select>
+    <label>السنة:</label>
+    <input type="number" id="yearInput" value="2026" style="width:80px;">
+  </div>
+  <div class="group">
+    <button class="primary" onclick="saveMonth()">💾 حفظ بيانات هذا الشهر</button>
+    <button onclick="loadMonth()">📂 استرجاع</button>
+    <button class="danger" onclick="clearForm()">🗑 تفريغ الخانات</button>
+    <button onclick="window.print()">🖨 طباعة / حفظ PDF</button>
+  </div>
+  <div class="group">
+    <label>الأشهر المحفوظة:</label>
+    <select id="savedList" onchange="loadSelectedSaved()"><option value="">-- اختر --</option></select>
+    <span id="statusMsg"></span>
+  </div>
+</div>
+
+<div class="sheet" id="sheet">
+
+  <!-- Letterhead -->
+  <div class="letterhead">
+    <div class="lh-line1">جمهورية مصر العربية</div>
+    <div class="lh-line2">وزارة التموين والتجارة الداخلية</div>
+    <div class="lh-rule"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="main-title">بيان بقراءة العدادات السرية لمحطة وقود ( <span class="fill" id="hdrStation" contenteditable="true">......................................</span> )</div>
+  <div class="top-row">
+    <div>والكائنة فى ( <span class="fill" id="hdrLocation" contenteditable="true">......................................</span> )</div>
+    <div>عن شهر <span class="fill" id="hdrMonth" contenteditable="true" style="min-width:60px;">.......</span>
+      لسنة <span class="fill" id="hdrYear" contenteditable="true" style="min-width:60px;">.......</span></div>
+  </div>
+
+  <!-- Section 1: بنزين ٨٠ (أحمر) -->
+  <div class="table-scroll">
+  <table class="report theme-red">
+    <tr><td class="section-title" colspan="9">أولاً :- بنزين ٨٠</td></tr>
+    <tr>
+      <th class="label-col">البيــان</th>
+      <th>مسدس ١</th><th>مسدس ٢</th><th>مسدس ٣</th><th>مسدس ٤</th>
+      <th>مسدس ٥</th><th>مسدس ٦</th><th>مسدس ٧</th><th>مسدس ٨</th>
+    </tr>
+    <tr>
+      <td class="label-col">بداية وردية اول يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-4"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-5"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-6"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-7"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-s-8"></td>
+    </tr>
+    <tr>
+      <td class="label-col">نهاية وردية اخر يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-4"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-5"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-6"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-7"></td>
+      <td class="data-cell" contenteditable="true" data-id="p80-e-8"></td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- Section 2: بنزين ٩٢ (أخضر) -->
+  <div class="table-scroll">
+  <table class="report theme-green" style="margin-top:16px;">
+    <tr><td class="section-title" colspan="5">ثانياً :- بنزين ٩٢</td></tr>
+    <tr>
+      <th class="label-col">البيــان</th>
+      <th>مسدس ١</th><th>مسدس ٢</th><th>مسدس ٣</th><th>مسدس ٤</th>
+    </tr>
+    <tr>
+      <td class="label-col">بداية وردية اول يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="p92-s-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-s-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-s-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-s-4"></td>
+    </tr>
+    <tr>
+      <td class="label-col">نهاية وردية اخر يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="p92-e-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-e-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-e-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="p92-e-4"></td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- Section 3: سولار (أصفر) -->
+  <div class="table-scroll">
+  <table class="report theme-yellow" style="margin-top:16px;">
+    <tr><td class="section-title" colspan="10">ثالثاً :- سولار</td></tr>
+    <tr>
+      <th class="label-col">البيــان</th>
+      <th>مسدس ١</th><th>مسدس ٢</th><th>مسدس ٣</th><th>مسدس ٤</th>
+      <th>مسدس ٥</th><th>مسدس ٦</th><th>مسدس ٧</th><th>مسدس ٨</th><th>مسدس ٩</th>
+    </tr>
+    <tr>
+      <td class="label-col">بداية وردية اول يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-4"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-5"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-6"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-7"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-8"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-s-9"></td>
+    </tr>
+    <tr>
+      <td class="label-col">نهاية وردية اخر يوم فى الشهر</td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-1"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-2"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-3"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-4"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-5"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-6"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-7"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-8"></td>
+      <td class="data-cell" contenteditable="true" data-id="sol-e-9"></td>
+    </tr>
+  </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="right-block" style="text-align:right;">
+      <div>ختم المنشأة</div>
+      <div class="stamp-box">اسم المنشأة:
+        <span class="fill" id="facilityName" contenteditable="true">..............................</span>
+      </div>
+    </div>
+    <div class="left-block" style="text-align:right;">
+      <div>المدير المسئول عن المحطة</div>
+      <div>الاسم / <span class="fill" id="managerName" contenteditable="true">..............................</span></div>
+      <div>التوقيع / <span class="fill" id="managerSign" contenteditable="true">..............................</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ARABIC_DIGITS = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+function toArabicDigits(str){
+  return String(str).replace(/[0-9]/g, d => ARABIC_DIGITS[d]);
+}
+const MONTH_NAMES = ["يناير","فبراير","مارس","ابريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const monthSelect = document.getElementById('monthSelect');
+MONTH_NAMES.forEach((m,i)=>{
+  const opt = document.createElement('option');
+  opt.value = i+1; opt.textContent = m;
+  monthSelect.appendChild(opt);
+});
+const now = new Date();
+monthSelect.value = now.getMonth()+1;
+document.getElementById('yearInput').value = now.getFullYear();
+
+const ALL_FIELD_IDS = [
+  'hdrMonth','hdrYear','hdrLocation','hdrStation',
+  'facilityName','managerName','managerSign'
+];
+document.querySelectorAll('[data-id]').forEach(el => ALL_FIELD_IDS.push(el.getAttribute('data-id')));
+
+function fieldEl(id){
+  return document.getElementById(id) || document.querySelector('[data-id="'+id+'"]');
+}
+
+function collectData(){
+  const data = {};
+  ALL_FIELD_IDS.forEach(id=>{
+    const el = fieldEl(id);
+    data[id] = el ? el.innerText.trim() : "";
+  });
+  return data;
+}
+
+function applyData(data){
+  ALL_FIELD_IDS.forEach(id=>{
+    const el = fieldEl(id);
+    if(el && data.hasOwnProperty(id)) el.innerText = data[id];
+  });
+}
+
+function storageKey(month, year){
+  return 'fuel_report_' + year + '_' + String(month).padStart(2,'0');
+}
+
+function refreshSavedList(){
+  const list = document.getElementById('savedList');
+  list.innerHTML = '<option value="">-- اختر --</option>';
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('fuel_report_')).sort().reverse();
+  keys.forEach(k=>{
+    const parts = k.replace('fuel_report_','').split('_');
+    const year = parts[0], month = parseInt(parts[1],10);
+    const opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = (MONTH_NAMES[month-1]||month) + ' ' + toArabicDigits(year);
+    list.appendChild(opt);
+  });
+}
+
+function saveMonth(){
+  const month = monthSelect.value;
+  const year = document.getElementById('yearInput').value;
+  document.getElementById('hdrMonth').innerText = MONTH_NAMES[month-1];
+  document.getElementById('hdrYear').innerText = toArabicDigits(year);
+  const data = collectData();
+  try{
+    localStorage.setItem(storageKey(month, year), JSON.stringify(data));
+    showStatus('✅ تم الحفظ: ' + MONTH_NAMES[month-1] + ' ' + year);
+    refreshSavedList();
+  }catch(e){
+    showStatus('⚠️ تعذر الحفظ في هذا العارض. افتح الملف مباشرة في المتصفح.');
+  }
+}
+
+function loadMonth(){
+  const month = monthSelect.value;
+  const year = document.getElementById('yearInput').value;
+  const raw = localStorage.getItem(storageKey(month, year));
+  if(!raw){ showStatus('لا توجد بيانات محفوظة لهذا الشهر'); return; }
+  applyData(JSON.parse(raw));
+  showStatus('📂 تم الاسترجاع: ' + MONTH_NAMES[month-1] + ' ' + year);
+}
+
+function loadSelectedSaved(){
+  const key = document.getElementById('savedList').value;
+  if(!key) return;
+  const raw = localStorage.getItem(key);
+  if(!raw) return;
+  applyData(JSON.parse(raw));
+  const parts = key.replace('fuel_report_','').split('_');
+  monthSelect.value = parseInt(parts[1],10);
+  document.getElementById('yearInput').value = parts[0];
+  showStatus('📂 تم الاسترجاع');
+}
+
+function clearForm(){
+  if(!confirm('هل تريد تفريغ جميع الخانات؟')) return;
+  document.querySelectorAll('[data-id]').forEach(el => el.innerText = '');
+  document.getElementById('hdrLocation').innerText = '......................................';
+  document.getElementById('hdrStation').innerText = '......................................';
+  document.getElementById('facilityName').innerText = '..............................';
+  document.getElementById('managerName').innerText = '..............................';
+  document.getElementById('managerSign').innerText = '..............................';
+  showStatus('تم تفريغ الخانات');
+}
+
+let statusTimer;
+function showStatus(msg){
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(()=>{ el.textContent=''; }, 4000);
+}
+
+try{ refreshSavedList(); }catch(e){}
+
+// Restrict meter-reading cells to Arabic-Indic digits only
+function placeCaretAtEnd(el){
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+document.querySelectorAll('td.data-cell').forEach(cell => {
+  cell.addEventListener('input', () => {
+    const original = cell.innerText;
+    let text = original.replace(/[0-9]/g, d => ARABIC_DIGITS[d]);
+    text = text.replace(/[^٠-٩]/g, '');
+    if (original !== text) {
+      cell.innerText = text;
+      placeCaretAtEnd(cell);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
